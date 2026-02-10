@@ -1,0 +1,9 @@
+title: Chris Harig
+description: Personal site
+url: "https://chrisharig.xyz"
+baseurl: ""
+
+theme: minima
+
+plugins:
+  - jekyll-feed
