@@ -6,5 +6,16 @@ baseurl: ""
 # Clean URLs without dates
 permalink: /:title/
 
+# Disable remote theme
+theme: null
+remote_theme: null
+
+# Exclude remote theme directories
+exclude:
+  - private/
+  - README.md
+  - Gemfile
+  - Gemfile.lock
+
 plugins:
   - jekyll-feed
