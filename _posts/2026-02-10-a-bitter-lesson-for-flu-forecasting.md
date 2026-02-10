@@ -5,7 +5,9 @@ date: 2026-02-10
 ---
 
 ### Introduction
-I recently read this [paper](https://www.researchgate.net/publication/389346428_Foundation_time_series_models_for_forecasting_and_policy_evaluation_in_infectious_disease_epidemics) when exploring statistical models for epidemiological forecasting. It tested deep learning models for time series data on a set of historical epidemiological data in France. Soon after, I found a few more papers lauding the zero-shot capabilities of the same models, mostly on historical data from outside the US. I wondered how they would perform on recent data from the US, preferably from after they were trained so we could avoid data leakage. I decided to benchmark Amazon's Chronos 2, Prior Lab's TabPFN-TS, Google's TimeFM 2.5, Salesforce's Moirai MOE and Moirai 2.0 against this year's competitors in the CDC's [FluSight Challenge](https://www.cdc.gov/flu-forecasting/index.html)
+I recently read this [paper](https://www.researchgate.net/publication/389346428_Foundation_time_series_models_for_forecasting_and_policy_evaluation_in_infectious_disease_epidemics) while exploring statistical models for epidemiological forecasting. It tested deep learning models for time series data on a dataset of historical epidemiological in France. Soon after, I found a few more papers lauding the zero-shot capabilities of the same models, mostly on historical data from outside the US. I wondered how they would perform on recent data from the US, preferably from after they were trained so we could avoid data leakage. 
+
+I decided to benchmark Amazon's Chronos 2, Prior Lab's TabPFN-TS, Google's TimesFM 2.5, Salesforce's Moirai MOE and Moirai 2.0 against this year's competitors in the CDC's [FluSight Challenge](https://www.cdc.gov/flu-forecasting/index.html). I selected these models because they appear in the above papers and are among the top performers on one of the only time series prediction benchmarks: [GIFT-Eval](https://huggingface.co/spaces/Salesforce/GIFT-Eval).
 
 From late November to early March every year, the CDC solicits predictions from teams across the US for targets you can read about [here](https://github.com/cdcepi/FluSight-forecast-hub/blob/main/README.md). I decided to focus on the quantile predictions of hospitalization rate due to influenza as it seems to be both the focus of the teams competing and FluSight's home page. The competition is ongoing, so we only have ten weeks of data to test on. 
 
@@ -18,7 +20,7 @@ For each model, I fed in the last four years from the NHSN dataset, and extracte
 
 First, I backfilled the data. Since we have the counts that were available at any given time with a timestamp of when they were available, and the "gold standard" final counts, we can take the average difference between the two and add it to the data we give the model. There are better ways to backfill data, but this naive approach decreased WIS by 10% or more, depending on the model. 
 
-Second, I tried every combination of ensemble model with two strategies: inverse confidence weighting and taking the median of the predictions. This method is a little more 'hacky', but I thought it was worth investigating. I would need to see a lot more data, preferably over multiple seasons, to be sure any specific ensemble is actually significantly better than another ensemble or solo model. 
+Second, I tried every combination of ensemble model with two strategies: inverse confidence weighting and taking the median of the predictions. This method is a little more 'hacky', but I thought it was worth investigating. We would need to see a lot more data, preferably over multiple seasons, to be sure any specific ensemble is actually significantly better than another ensemble or solo model. 
 
 Overall we found Moirai-Moe to be the most effective solo model at the state level, but ensembles far outperform both it and UMass-flusion. 
 
@@ -62,20 +64,24 @@ TabPFN-TS outperforms some ensembles to become the third best model overall, pro
 
 Below is a chart showing the predictions of the best deep learning model, deep learning ensemble model, and competition model for the state level nowcast over time:
 
-<iframe src="/flusight-charts/state_predictions_h0.html" width="100%" height="600" frameborder="0"></iframe>
+<div style="position: relative; width: 100%; padding-bottom: 60%; margin: 1em 0;">
+  <iframe src="/flusight-charts/state_predictions_h0.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+</div>
 
 A common issue in the FluSight challenge is predicting when the largest seasonal spike will occur. While the deep learning models don't nail it, we can see Moirai gets pretty close by the time the peak hits.
 
 Here we can see the rWIS over different horizons: 
 
-<iframe src="/flusight-charts/state_rwis.html" width="100%" height="600" frameborder="0"></iframe>
+<div style="position: relative; width: 100%; padding-bottom: 60%; margin: 1em 0;">
+  <iframe src="/flusight-charts/state_rwis.html" style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; border: none;"></iframe>
+</div>
 
 Note that the rWIS improves at longer horizons simply because the baseline is getting worse over time. WIS still trends down over time. That said, as demonstrated by the models' relatively strong zero-shot performance, I think they have a shot at being great at long horizon predictions if we spend more time improving what we can.
 
 ### Speculation
-In Richard Sutton's infamous [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html), he details how general methods that leverage computation are ultimately the most effective. Looking at this preliminary data, I'm inclined to believe this applies to epidemiological forecasting. 
+In Rich Sutton's infamous [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html), he details how general methods that leverage computation are ultimately the most effective. Looking at this preliminary data, I'm inclined to believe this applies to epidemiological forecasting. 
 
-By no means is this small sample proof that large, general deep learning models will outperform others in the long run, or generalize to a wide variety of locations, illnesses and data. However, I think the relative infancy of the techniques described, the swell of recent papers on this particular subject and the success of deep learning across domains is substantial evidence that epidemiological forecasting could at least be improved, if not dominated by deep learning techniques in the long run. 
+By no means does this small sample prove that large, general deep learning models will outperform others in the long run, or generalize to a wide variety of locations, illnesses and data. However, I think the relative infancy of the techniques described, the swell of recent papers on this particular subject and the success of deep learning across domains is substantial evidence that epidemiological forecasting could at least be improved, if not dominated by deep learning techniques in the long run. 
 
 
 ### What's Next
@@ -89,5 +95,5 @@ I also think we can get useful information out of the models beside their predic
 
 The original paper above validated the idea of using these predictions for counterfactual policy scenarios. If we pack in meaningful covariates that we have control over, we can test how moving those covariates will move the overall number of hospitalizations. This method is again reliant on those covariates being causal. 
 
-I plan to test these ideas and write another post if we get mileage out of these models for this domain. 
+I plan to test these ideas and write another post if the models are successful. 
 

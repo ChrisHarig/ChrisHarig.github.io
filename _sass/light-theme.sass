@@ -20,3 +20,21 @@ a
 
 code:not(pre code)
   background: hsl(230deg, 18%, 78%)
+
+// Responsive iframes for mobile
+iframe
+  max-width: 100%
+  height: auto
+  min-height: 400px
+
+@media (max-width: 768px)
+  iframe
+    min-height: 500px
+
+  // Chart wrapper adjustments for mobile
+  div[style*="padding-bottom: 60%"]
+    padding-bottom: 120% !important  // Taller for better visibility
+    margin-bottom: 3em !important    // More space below chart
+    margin-left: -1em !important     // Reduce horizontal padding
+    margin-right: -1em !important    // Reduce horizontal padding
+    width: calc(100% + 2em) !important  // Compensate for negative margins
