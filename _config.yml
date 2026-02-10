@@ -3,7 +3,8 @@ description: Personal site
 url: "https://chrisharig.xyz"
 baseurl: ""
 
-theme: minima
+# Clean URLs without dates
+permalink: /:title/
 
 plugins:
   - jekyll-feed

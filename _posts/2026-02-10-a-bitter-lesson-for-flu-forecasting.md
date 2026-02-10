@@ -12,7 +12,7 @@ From late November to early March every year, the CDC solicits predictions from 
 Forecasters submit 23 quantiles plus a point prediction of hospitalizations for each of four horizons: h0, h1, h2, and h3, where h0 is a "nowcast" or the predicted hospitalizations for the week that just occurred, and the h1-h3 are the proceeding three weeks. The CDC updates the data often (pulled from the [NHSN Weekly Hospital Respiratory Dataset](https://data.cdc.gov/Public-Health-Surveillance/Weekly-Hospital-Respiratory-Data-HRD-Metrics-by-Ju/ua7e-t2fy/about_data)), but counts are not finalized for weeks after predictions occur. Forecasters don't get to see this "gold standard" data when they make their prediction, but are evaluated on it. They are evaluated with a Weighted Interval Score (WIS) relative to the baseline FluSight model's WIS, where a lower score is better.
 
 ### Results
-You can find my code [here]().
+You can find my code [here](https://github.com/ChrisHarig/dl-flusight).
 
 For each model, I fed in the last four years from the NHSN dataset, and extracted forecasts of the next four weeks. The models performed very well right away, but a few simple changes improved performance greatly. 
 
@@ -75,7 +75,7 @@ Note that the rWIS improves at longer horizons simply because the baseline is ge
 ### Speculation
 In Richard Sutton's infamous [The Bitter Lesson](http://www.incompleteideas.net/IncIdeas/BitterLesson.html), he details how general methods that leverage computation are ultimately the most effective. Looking at this preliminary data, I'm inclined to believe this applies to epidemiological forecasting. 
 
-By no means is this small sample proof that large, general deep learning models will outperform others in the long run, or generalize to a wide variety of locations, illnesses and data. However, I think the relative infancy of the techniques described, the swell of recent papers on this particular subject and the success of deep learning in domains like natural language is substantial evidence that epidemiological forecasting could at least be improved, if not dominated by deep learning techniques in the long run. 
+By no means is this small sample proof that large, general deep learning models will outperform others in the long run, or generalize to a wide variety of locations, illnesses and data. However, I think the relative infancy of the techniques described, the swell of recent papers on this particular subject and the success of deep learning across domains is substantial evidence that epidemiological forecasting could at least be improved, if not dominated by deep learning techniques in the long run. 
 
 
 ### What's Next
