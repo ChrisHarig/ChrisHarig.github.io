@@ -3,15 +3,18 @@ layout: default
 title: "Home"
 ---
 
-{% if site.show_excerpts %}
-  {% for post in site.posts %}
-    <article>
-      {% include meta.html post=post %}
-      {{ post.excerpt }}
-      <footer class="button"><a href="{{ post.url | relative_url }}">read more</a></footer>
-    </article>
-  {% endfor %}
-{% else %}
-  {% capture source %}{% include_relative archive.html title="Posts" %}{% endcapture %}
-  {{ source | split: "---" | last }}
-{% endif %}
+<main>
+  <section class="intro">
+    <p>Hello! I'm a software engineer and aspiring AI researcher. You can find some of my projects on my <a href="https://github.com/ChrisHarig">github</a>. Previously I was a swimmer at Arizona State, and built <a href="https://bassline.dev/">Bassline</a> after finishing school.
+    </p>
+    <p>
+      I'm interested in AI control, especially environment design and cost-constrained protocols. Currently I'm building a <a href="https://cua-arena.com">computer use setting</a> for control arena, and working on various experiments involving control protocols like factored cognition and hierarchical monitoring.
+    </p>
+  </section>
+
+  <nav class="smooth">
+    {% for post in site.posts %}
+    <div><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></div>
+    {% endfor %}
+  </nav>
+</main>
