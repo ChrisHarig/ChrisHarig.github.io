@@ -1,25 +1,22 @@
 body
   font: 16px / #{$line-height} $font-family
   font-size: $font-size
-  background: light(100, 16)
+  background: light-dark(#f4f1e8, light(16))
   color: light(6, 100)
 
 p
   text-align: justify
 
 a
-  color: $link
+  color: inherit
+  text-decoration: underline
+  text-decoration-thickness: 1px
+  text-underline-offset: 3px
   transition: .25s
-  box-shadow: 0 2px transparent
-  text-decoration-color: transparent
+  &:hover
+    text-decoration-thickness: 2px
   header &, footer &, nav &
     font-weight: bold
-  header &, footer &, nav &:not(:hover)
-    color: inherit
-  article &:hover
-    text-decoration-color: inherit
-  body > header &:hover, body > footer &:hover
-    box-shadow: 0 2px
 
 hr
   border: 1px solid gray(100)
