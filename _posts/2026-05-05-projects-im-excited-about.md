@@ -4,17 +4,17 @@ title: "Projects I'm Excited About"
 date: 2026-05-05
 ---
 
-This is a short list of projects I’m excited about. Most of these ideas are relevant to AI control, which I’ve studied the last few months. During that time I’ve accumulated a long list of ideas that needs refining, so this is an exercise in thinking through what to pursue next. I ended up with three directions I'd like to either validate or make some significant progress on. 
+This is a short list of projects I’m excited about. I've studied AI control for the last few months and accumulated a long list of project ideas. I wrote this to figure out which ideas to pursue next, and hopefully get feedback on my thinking from others. I ended up with three directions I'd like to make some significant progress on. I realized while writing that many of these ideas are closer to categories of research than they are specific project proposals, so I tried to list at least one small experiment under each section. 
 
 I tried to be thorough in noting any similar projects and their relevance in each section. Some of these ideas are directly inspired by posts I read over the past few months:
 
 Bruce Lee’s [“Salient Directions in AI Control”](https://brucewlee.com/blog/posts/salient-directions-ai-control.html)
 
-Redwood’s [“Recent Redwood Research Project Proposals”](https://blog.redwoodresearch.org/p/recent-redwood-research-project-proposals?utm_source=publication-search)
+Ryan Greenblatt's [“An Overview of Control Measures”](https://blog.redwoodresearch.org/p/an-overview-of-control-measures)
 
-Thanks to the authors for posting their ideas! 
+Thanks to the authors for posting these! 
 
-I’m open to guidance on which ideas I should pursue. I have limited funding, so many of these won’t be completed for a while, if at all. Feel free to take these and let me know what you find!
+I’m open to guidance on which projects I should pursue. I have limited funding, so many projects won’t be completed for a while, if at all. Feel free to take them and let me know what you find!
 
 ## Scaling Laws for Monitoring
 
@@ -45,11 +45,11 @@ Starting with environment transfer seems simplest, and main task/side task trans
 
 The usefulness of these results depends on two things: first, DSPy and GEPA finding a high-quality monitor for each environment set; and second, the environments being diverse enough for the results to mean something. There is also a question of whether it’s worth it to test across environments rather than side task types, when we generally know what deployment settings will look like, but we might not know how attackers could achieve side tasks. Again, this is a little bit of a blurry line because side task type is dependent on environment selection, but it’s worth considering what I actually want to learn when it comes time to do this project and pinning the smaller details down.
 
-## Agentic Monitors 
+## Agent Monitors 
 
 Any sort of agent monitor seems exciting and possibly necessary to me. It feels like a massive handicap to limit monitors to just viewing actions and/or chain of thought, especially as intelligence seems to be at least partially a function of test-time compute. 
 
-Agentic tasks like inspecting diffs, blacklisting tools, running tests, and setting honeypots are the lowest-hanging fruit. I think with current LLMs’ coding abilities, especially on narrow tasks, blacklisting tools and inspecting diffs are safe and reliable ways to restrict an untrusted model without much guidance. The obvious fear about running tests is that, depending on what the monitor allows as input to the tests, it could execute unsafe code and achieve something the attacker wants. Honeypots may just be obvious to a stronger attacker, and the attacker may have plausible deniability. I would start with inspecting diffs and blacklisting tools in a setting where we can compare the effect across many environments with the same tools but different environments, like LinuxArena. 
+Agent tasks like inspecting diffs, blacklisting tools, running tests, and setting honeypots are the lowest-hanging fruit. I think with current LLMs’ coding abilities, especially on narrow tasks, blacklisting tools and inspecting diffs are safe and reliable ways to restrict an untrusted model without much guidance. The obvious fear about running tests is that, depending on what the monitor allows as input to the tests, it could execute unsafe code and achieve something the attacker wants. Honeypots may just be obvious to a stronger attacker, and the attacker may have plausible deniability. I would start with inspecting diffs and blacklisting tools in a setting where we can compare the effect across many environments with the same tools but different environments, like LinuxArena. 
 
 There may be room for more complex agent setups. Maybe accessing transcripts from other trajectories or other monitors could help the agent catch attackers. Ensembles where a non-agent monitor triggers an agent monitor at a threshold, or because an action isn’t clear, could limit cost. 
 
@@ -74,13 +74,15 @@ A project that tries to make ensembling decisions based on our current understan
 
 Another version of ensemble monitoring that may not need more research before starting is hierarchical monitoring. [This paper](https://arxiv.org/pdf/2507.15886) introduces the idea. It sets up an optimization problem involving maximizing safety with a cost constraint and solves for two monitors. I'm not exactly sure what the next logical step from this paper would be besides doing the analysis with different monitors, but I really like the idea behind it. Maybe the next step is just building some basic Control Arena tooling and seeing if it improves the experiment process later on. For instance, I could see myself training monitors, tracking costs of a dual monitoring vs. single monitoring setting, and comparing the two cost-safety equilibria against each other to either decide what to train next, or decide which “wins” the experiment.
 
-Some work [combining probes with reasoning monitors](https://www.lesswrong.com/posts/eaEqAzGN3uJfpfGoc/trusted-monitoring-but-with-deception-probes) has shown ensembles beat single-monitor baselines. One monitor with actions, one agentic monitor, probes, [self-report](https://alignment.openai.com/self-incrimination) and so on could all culminate in a stronger monitor. There may be a bitter lesson thing here where over time all of this gets blown away by just using a stronger model with a basic prompt. I also imagine this is not the most useful project, because I'm not exactly sure what we would learn beyond “more signals are better”. That being said, building the best possible monitor, analyzing different hierarchies for cost tradeoffs and trying to find an attack that threads the needle between monitors does sound like it would yield something useful. 
+Some work [combining probes with reasoning monitors](https://www.lesswrong.com/posts/eaEqAzGN3uJfpfGoc/trusted-monitoring-but-with-deception-probes) has shown ensembles beat single-monitor baselines. One monitor with actions, one agent monitor, probes, [self-report](https://alignment.openai.com/self-incrimination) and so on could all culminate in a stronger monitor. There may be a bitter lesson thing here where over time all of this gets blown away by just using a stronger model with a basic prompt. I also imagine this is not the most useful project, because I'm not exactly sure what we would learn beyond “more signals are better”. That being said, building the best possible monitor, analyzing different hierarchies for cost tradeoffs and trying to find an attack that threads the needle between monitors does sound like it would yield something useful. 
 
 ### Control Arena Tooling
 
 I have a lot of ideas for extra features that could be added to Control Arena. Some of these may be incidental to the projects above. There is also a question of the value of this, because it’s so cheap to write pretty good code now, others may not get much value out of simple extensions that they could spin up in their preferred manner whenever they want. I still think there is some value though if I put in enough effort to make these extensions high-quality because it cuts down the time others would spend writing and verifying extensions and it may let people measure things they hadn't considered before. 
 
-The first set of extensions I’m working on are for cost monitoring. I assume cost is a large constraint at labs, so it seems smart to measure it at least some of the time. My plan is to add some tools that monitor the literal cost of a protocol in API credits, and some for counterfactual analysis. Future extensions will likely be centered on the projects I listed above, like agentic monitoring. 
+The first set of extensions I’m working on are for cost monitoring. I assume cost is a large constraint at labs, so it seems smart to measure it at least some of the time. My plan is to add some tools that monitor the literal cost of a protocol in API credits, and some for counterfactual analysis. Future extensions will likely be centered on the projects I listed above, like scaffolding for agent monitors. 
 
 ## Conclusion
-I may add some ideas over the next week, but I'm pretty happy with these ideas so far. I think there are some solid, small experiments to run in the coming weeks that could hopefully grow into larger projects. Again, I'm open to any suggestions, comments or critiques!
+In general I'm happy with this list. I would like to understand more about how other people are thinking through what research to prioritize right now. I enjoyed Alex Mallen's [post on fitness-seeking AIs](https://blog.redwoodresearch.org/p/risk-from-fitness-seeking-ais-mechanisms), because it seems to reorient control thinking to a very likely form of misalignment that we've already seen. I'd like to hear about what others think are prudent research directions given the state of models. 
+
+Again, I'm open to any suggestions, comments or critiques on this post!
