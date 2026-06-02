@@ -6,7 +6,7 @@ title: "Home"
 <main>
   <section class="intro">
     <h1>Chris Harig</h1>
-    <p>Hello! I'm a software engineer and aspiring AI researcher. I'm interested in AI control, especially novel attacks, monitor capabilities and environment design. Currently I'm building a <a href="https://cua-arena.com">computer-use setting</a> for Control Arena, and working on various experiments involving omission attacks.
+    <p>Hello! I'm a software engineer and aspiring AI researcher. I'm interested in AI control, especially novel attacks, monitor capabilities and environment design. Currently I'm working on various experiments involving omission attacks and novel monitoring techniques.
     </p>
     <p>
       You can find some of my other projects on my <a href="https://github.com/ChrisHarig">github</a>. Previously I was a swimmer at Arizona State, and built <a href="https://bassline.dev/">Bassline</a> after finishing school.
@@ -18,7 +18,13 @@ title: "Home"
 
   <nav class="smooth">
     {% for post in site.posts %}
-    <div><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time><a href="{{ post.url | relative_url }}">{{ post.title }}</a></div>
+    <div><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%Y-%m-%d" }}</time>
+      {%- if post.external_url -%}
+      <a href="{{ post.external_url }}">{{ post.title }}<svg class="external" aria-hidden="true" viewBox="0 0 512 512"><path fill="currentColor" d="M432 320h-32a16 16 0 0 0-16 16v112H64V128h144a16 16 0 0 0 16-16V80a16 16 0 0 0-16-16H48A48 48 0 0 0 0 112v352a48 48 0 0 0 48 48h352a48 48 0 0 0 48-48V336a16 16 0 0 0-16-16zM488 0H360c-21.4 0-32.1 25.9-17 41l35.7 35.7L135 320.4a24 24 0 0 0 0 34L157.7 377a24 24 0 0 0 34 0l243.6-243.7L471 169c15 15 41 4.5 41-17V24a24 24 0 0 0-24-24z"/></svg></a>
+      {%- else -%}
+      <a href="{{ post.url | relative_url }}">{{ post.title }}</a>
+      {%- endif -%}
+    </div>
     {% endfor %}
   </nav>
 </main>
