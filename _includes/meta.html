@@ -1,5 +1,6 @@
 <header>
   <h1>{{ include.post.title }}</h1>
-  {%- assign date_format = site.date_format | default: "%B %d, %Y" -%}
+  {%- assign date_format = site.date_format | default: "%B %-d, %Y" -%}
   {% if include.post.date %}<time datetime="{{ include.post.date | date_to_xmlschema }}">{{ include.post.date | date: date_format }}</time>{% endif %}
+  {%- if include.post.updated %}<span class="updated">updated {{ include.post.updated | date: date_format }}</span>{% endif -%}
 </header>
