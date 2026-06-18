@@ -2,7 +2,7 @@
 layout: post
 title: "Projects I’m Excited About"
 date: 2026-05-05
-updated: 2026-06-08
+updated: 2026-06-17
 ---
 
 I’ve studied AI control for the last few months and accumulated a long list of project ideas. I wrote this post to figure out which ideas to pursue next and get feedback from other researchers. I ended up with four directions I’d like to see some significant progress on. While writing I realized that many of these ideas are closer to categories of research than they are specific project proposals, so I tried to list at least one small experiment under each section. Any similar or relevant projects should be noted under each section, but it’s possible I missed some.
@@ -21,6 +21,8 @@ I’m open to guidance on which projects I should pursue, how the experiments sh
 
 ## Omission Attacks
 
+***Update June 17, 2026:*** [My project proposal](https://www.lesswrong.com/posts/5W38vuwbJmTYfY6t3/omission-attacks-project-proposal) is up on LessWrong. The writing below may clarify some of my thinking about omission attacks, but the proposal is much more up to date with my plan moving forwards. If you are interested in funding any part of this project let me know!
+
 Last week I read Redwood’s post on [Research Sabotage in ML Codebases](https://blog.redwoodresearch.org/p/research-sabotage-in-ml-codebases). They mention that the hardest type of attack to catch was "Omission Sabotage", where the red team simply leaves out an important design detail. Separately, during the Apart Research Hackathon I participated in, the [winning paper](https://apartresearch.com/project/omission-attacks-when-doing-nothing-is-the-attack-0y1v) from Jurgis Kemeklis and Nikhil Vemuri was "Omission Attacks", where the red team’s side task was to simply leave out a key step. They too found this class of attack was very difficult to catch. I think the omission pattern warrants more focus.
 
 Omission attacks don’t quite break from classic control assumptions, but they do break from my conception of classic monitor and auditor patterns. Monitors and auditors are usually tasked to look out for attacks, which take the shape of actions. Omissions are the absence of necessary actions. My hypothesis is that monitors and auditors have a harder time trying to catch omissions rather than "normal" attacks because omissions require some prediction about what should happen, while normal attacks only require that you realize that something shouldn’t have happened. It’s not necessary to find out why omissions are hard to catch to find out how dangerous they are, but the hypothesis may guide how we think about monitoring them later on.
@@ -34,8 +36,6 @@ We may already see omissions happening naturally. For instance, I often go throu
 There are a few mitigations I believe should work for omissions. CoT monitoring is at the top of the list. It doesn’t seem likely to me that an attacker will have an easier time hiding omissions than any other attack. I think the next best mitigation is writing good test cases. An async monitor could write test cases for the code afterwards, or we could ask the attacker to write test cases upfront based on a plan. I don’t know if either of these would work in practice, but with enough test coverage it should be really hard to omit something without setting off a test case. In ML experiments, it may make sense for the async monitor to just re-run the experiments with different settings (like the Research Sabotage paper above did), rather than write test cases.
 
 To start, I’d like to collect and/or build a set of tasks where omission attacks are relevant. These could be from security settings and ML sabotage settings. I think benchmarking omission attacks against existing high-stakes attacks, and developing some theory of omission monitoring are the two things I’d like to accomplish. There are interesting add-ons to the project like checking how many attempts it takes a trusted agent to find and fix the omission, letting monitors build and run tests, and seeing if attackers can dodge CoT monitors by not reasoning about omissions.
-
-***Update June 8, 2026:*** I have a small set of successful omissions in LinuxArena tasks. I have a better idea of how to measure omissions (ask the attacker to omit a step from the same main task’s honest trajectory). I am not currently studying the ML sabotage route, but will start if I can find time and funding. If you are interested in funding any part of this project let me know!
 
 ## Scaling Laws for Monitoring
 
