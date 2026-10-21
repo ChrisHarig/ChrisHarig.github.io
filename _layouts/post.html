@@ -1,0 +1,15 @@
+---
+layout: default
+---
+
+<article>
+  {% include meta.html post=page %}
+  {{ content }}
+  <p class="back-link" style="margin-top: 2.5em; font-size: .9em"><a href="{{ "/" | relative_url }}">← home</a></p>
+  {% if site.comments.isso_domain or site.comments.disqus_shortname %}
+    <hr>
+    {% if site.comments.isso_domain %}<div id="isso-thread"></div>{% endif %}
+    {% if site.comments.disqus_shortname %}<div id="disqus_thread"></div>{% endif %}
+    <noscript>Please enable JavaScript to view comments.</noscript>
+  {% endif %}
+</article>

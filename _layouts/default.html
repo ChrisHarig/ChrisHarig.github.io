@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="{{ page.lang | default: site.lang }}">
+
+{% include head.html %}
+
+{{ content }}
+
+{%- if site.footer -%}
+<footer class="hover">
+  <div>{{ site.description }}</div>
+  {% include menu.html menu=site.footer %}
+</footer>
+{%- endif -%}
+
+</html>
